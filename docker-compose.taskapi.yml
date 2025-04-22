@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  task-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.taskapi
+    container_name: webodm-task-api
+    ports:
+      - "8899:8080"
+    environment:
+      - DB_NAME=webodm_dev
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db  # This will reference the existing WebODM db container
+      - DB_PORT=5432
+    networks:
+      - webodm_default  # Will connect to the existing WebODM network
+    restart: unless-stopped
+
+networks:
+  webodm_default:
+    external: true  # This indicates we're using an existing network
